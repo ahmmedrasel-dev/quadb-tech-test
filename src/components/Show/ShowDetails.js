@@ -3,9 +3,11 @@ import React from 'react';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import BookModal from '../Book/BookModal';
 
 const ShowDetails = () => {
   const [show, setShow] = useState([]);
+  const [booking, setBookig] = useState(null);
   const [loading, setLoading] = useState(true)
   const { id } = useParams();
   const url = `https://api.tvmaze.com/shows/${id}`;
@@ -34,10 +36,20 @@ const ShowDetails = () => {
           <p>Genres: {show.genres[0]} {show.genres[1]}</p>
           <p>Status: {show.status}</p>
           <p>Runtime: {show.runtime}</p>
-          <p>Summmary: {show.summary}</p>
+          <p dangerouslySetInnerHTML={{ __html: show.summary }} />
           <div className="card-actions justify-end">
-            <button className="btn btn-primary">Booki Ticket</button>
+            <label
+              htmlFor="bookingModal"
+              className="btn btn-primary"
+              onClick={() => setBookig(show)}
+            >Book Ticket</label>
           </div>
+
+          {
+            booking && <BookModal
+              show={show}
+            ></BookModal>
+          }
         </div>
       </div>
     </div>
